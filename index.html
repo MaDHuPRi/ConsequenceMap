@@ -5,501 +5,448 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Consequence Map — Think deeper</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&family=Geist:wght@300;400;500&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #0d0d0d;
-    --surface: #161616;
-    --surface2: #1f1f1f;
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.14);
-    --text: #f0ede8;
-    --text2: #8a8680;
-    --text3: #5a5754;
-    --accent: #c8ff57;
-    --accent2: #57ffd4;
-    --accent3: #ff8c42;
-    --c1: #c8ff57;
-    --c2: #57ffd4;
-    --c3: #ff8c42;
-    --c1-bg: rgba(200,255,87,0.08);
-    --c2-bg: rgba(87,255,212,0.08);
-    --c3-bg: rgba(255,140,66,0.08);
-    --c1-border: rgba(200,255,87,0.25);
-    --c2-border: rgba(87,255,212,0.25);
-    --c3-border: rgba(255,140,66,0.25);
-  }
+:root {
+  --bg: #080c10;
+  --surface: #0e1318;
+  --surface2: #141c24;
+  --surface3: #1a2430;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --text: #e8e4de;
+  --text2: #8a8a8a;
+  --text3: #4a4a4a;
+  --c1: #6ee7b7;       /* emerald — direct */
+  --c2: #93c5fd;       /* blue — reactions */
+  --c3: #f9a8d4;       /* rose — systemic */
+  --c1-bg: rgba(110,231,183,0.06);
+  --c2-bg: rgba(147,197,253,0.06);
+  --c3-bg: rgba(249,168,212,0.06);
+  --c1-border: rgba(110,231,183,0.2);
+  --c2-border: rgba(147,197,253,0.2);
+  --c3-border: rgba(249,168,212,0.2);
+  --c1-glow: rgba(110,231,183,0.15);
+  --c2-glow: rgba(147,197,253,0.15);
+  --c3-glow: rgba(249,168,212,0.15);
+}
 
-  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Geist', sans-serif; overflow-x: hidden; }
 
-  /* ── HERO ── */
-  #hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-  }
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
 
-  #hero::before {
-    content: '';
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,255,87,0.06) 0%, transparent 70%);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -60%);
-    pointer-events: none;
-  }
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 2rem; position: relative; z-index: 1;
+}
 
-  .hero-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 0.1s;
-  }
+.glow-orb {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  filter: blur(80px);
+}
+.orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(110,231,183,0.07) 0%, transparent 70%); top: 10%; left: 50%; transform: translateX(-50%); }
+.orb-2 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(147,197,253,0.05) 0%, transparent 70%); top: 40%; right: 15%; }
 
-  h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    line-height: 1.05;
-    text-align: center;
-    max-width: 700px;
-    margin-bottom: 1.25rem;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 0.2s;
-  }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px; letter-spacing: 0.15em; color: var(--c1);
+  text-transform: uppercase; margin-bottom: 2rem;
+  padding: 5px 14px; border: 1px solid var(--c1-border);
+  border-radius: 20px; background: var(--c1-bg);
+  opacity: 0; animation: fadeUp 0.5s ease forwards 0.1s;
+}
 
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
+h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(3rem, 7.5vw, 6rem);
+  line-height: 1.02; text-align: center; max-width: 680px;
+  margin-bottom: 1.25rem; font-weight: 400;
+  opacity: 0; animation: fadeUp 0.5s ease forwards 0.2s;
+}
+h1 em { font-style: italic; color: var(--c1); }
 
-  .hero-sub {
-    font-size: 1rem;
-    color: var(--text2);
-    text-align: center;
-    max-width: 460px;
-    line-height: 1.7;
-    margin-bottom: 2.5rem;
-    font-weight: 300;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 0.3s;
-  }
+.hero-sub {
+  font-size: 1rem; color: var(--text2); text-align: center;
+  max-width: 440px; line-height: 1.75; margin-bottom: 3rem;
+  font-weight: 300; opacity: 0; animation: fadeUp 0.5s ease forwards 0.3s;
+}
 
-  .input-wrap {
-    width: 100%;
-    max-width: 620px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 0.4s;
-  }
+.input-wrap {
+  width: 100%; max-width: 600px;
+  opacity: 0; animation: fadeUp 0.5s ease forwards 0.4s;
+}
 
-  textarea {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 12px;
-    padding: 1.1rem 1.25rem;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 300;
-    resize: none;
-    outline: none;
-    transition: border-color 0.2s;
-    line-height: 1.6;
-    min-height: 100px;
-  }
+/* OLLAMA SECTION */
+.provider-box {
+  margin-bottom: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+.provider-label {
+  font-family: 'Geist Mono', monospace; font-size: 10px;
+  letter-spacing: 0.12em; color: var(--c1); text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.provider-fields { display: flex; flex-direction: column; gap: 8px; }
+.field-label {
+  font-family: 'Geist Mono', monospace; font-size: 10px;
+  letter-spacing: 0.1em; color: var(--text3); text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.field-row { display: flex; gap: 8px; }
+.api-key-input {
+  flex: 1; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 9px 12px; color: var(--text);
+  font-family: 'Geist Mono', monospace; font-size: 12px; outline: none;
+  transition: border-color 0.2s; width: 100%;
+}
+.api-key-input:focus { border-color: var(--c1-border); }
+.api-save-btn {
+  padding: 9px 16px; background: var(--c1); color: #080c10;
+  border: none; border-radius: 8px; font-family: 'Geist', sans-serif;
+  font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;
+}
+.status-line {
+  font-family: 'Geist Mono', monospace; font-size: 11px;
+  color: var(--text3); margin-top: 4px;
+}
+.ollama-hint {
+  font-size: 11px; color: var(--text3); line-height: 1.6; margin-top: 4px;
+}
+.ollama-hint code {
+  background: var(--surface2); padding: 1px 6px; border-radius: 4px;
+  font-family: 'Geist Mono', monospace; color: var(--text2);
+}
 
-  textarea::placeholder { color: var(--text3); }
-  textarea:focus { border-color: rgba(200,255,87,0.4); }
+textarea {
+  width: 100%; background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 1.1rem 1.25rem; color: var(--text);
+  font-family: 'Geist', sans-serif; font-size: 1rem; font-weight: 300;
+  resize: none; outline: none; transition: border-color 0.2s; line-height: 1.65; min-height: 90px;
+}
+textarea::placeholder { color: var(--text3); }
+textarea:focus { border-color: var(--c1-border); }
 
-  .examples {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 12px 0;
-  }
+.examples {
+  display: flex; flex-wrap: wrap; gap: 7px; margin: 11px 0;
+}
+.ex-chip {
+  font-size: 12px; padding: 5px 13px; border: 1px solid var(--border2);
+  border-radius: 20px; color: var(--text3); cursor: pointer;
+  background: transparent; font-family: 'Geist', sans-serif; transition: all 0.15s;
+}
+.ex-chip:hover { border-color: var(--c1-border); color: var(--c1); background: var(--c1-bg); }
 
-  .ex-chip {
-    font-size: 12px;
-    padding: 5px 12px;
-    border: 1px solid var(--border2);
-    border-radius: 20px;
-    color: var(--text2);
-    cursor: pointer;
-    background: transparent;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.15s;
-  }
-  .ex-chip:hover { border-color: var(--accent); color: var(--accent); }
+.cta-btn {
+  width: 100%; margin-top: 10px; padding: 1rem;
+  background: var(--c1); color: #080c10; font-family: 'Geist', sans-serif;
+  font-size: 0.95rem; font-weight: 500; border: none; border-radius: 10px;
+  cursor: pointer; transition: opacity 0.15s, transform 0.1s; letter-spacing: 0.01em;
+}
+.cta-btn:hover { opacity: 0.88; }
+.cta-btn:active { transform: scale(0.99); }
+.cta-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
-  .cta-btn {
-    width: 100%;
-    margin-top: 12px;
-    padding: 1rem;
-    background: var(--accent);
-    color: #0d0d0d;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: opacity 0.15s, transform 0.1s;
-    letter-spacing: 0.01em;
-  }
-  .cta-btn:hover { opacity: 0.88; }
-  .cta-btn:active { transform: scale(0.99); }
-  .cta-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.cmd-hint {
+  text-align: center; margin-top: 8px;
+  font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--text3);
+}
+.cmd-hint kbd {
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 4px; padding: 1px 5px; font-size: 10px;
+}
 
-  /* ── MAP SECTION ── */
-  #map-section {
-    display: none;
-    padding: 2rem 1.5rem 4rem;
-    max-width: 900px;
-    margin: 0 auto;
-  }
+/* ── LOADING ── */
+#loading {
+  display: none; flex-direction: column; align-items: center;
+  justify-content: center; padding: 6rem 2rem; gap: 2rem;
+  position: relative; z-index: 1;
+}
+.loader-dots {
+  display: flex; gap: 6px; align-items: center;
+}
+.loader-dots span {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--c1);
+  animation: dotBounce 1.2s ease-in-out infinite;
+}
+.loader-dots span:nth-child(2) { animation-delay: 0.15s; background: var(--c2); }
+.loader-dots span:nth-child(3) { animation-delay: 0.3s; background: var(--c3); }
+.loader-label {
+  font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--text3);
+  letter-spacing: 0.1em; min-height: 18px; transition: opacity 0.3s;
+}
 
-  .map-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
+/* ── MAP SECTION ── */
+#map-section {
+  display: none; position: relative; z-index: 1;
+  padding: 2.5rem 2rem 5rem;
+}
 
-  .decision-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--text3);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
+.map-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 1rem; margin-bottom: 3rem; max-width: 1100px; margin-left: auto; margin-right: auto;
+  padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+}
+.decision-meta { font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase; margin-bottom: 7px; }
+.decision-text { font-family: 'Instrument Serif', serif; font-size: 1.6rem; line-height: 1.3; max-width: 600px; font-weight: 400; }
 
-  .decision-text {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
-    line-height: 1.3;
-    max-width: 560px;
-  }
+.header-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.ghost-btn {
+  padding: 7px 14px; background: transparent; border: 1px solid var(--border2);
+  border-radius: 8px; color: var(--text2); font-family: 'Geist', sans-serif;
+  font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.ghost-btn:hover { color: var(--text); background: var(--surface); }
 
-  .reset-btn {
-    flex-shrink: 0;
-    padding: 8px 16px;
-    background: transparent;
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    color: var(--text2);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .reset-btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface); }
+/* ── TREE LAYOUT ── */
+.tree-wrap {
+  max-width: 1100px; margin: 0 auto; position: relative;
+}
 
-  /* ── LOADING ── */
-  #loading {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5rem 2rem;
-    gap: 1.5rem;
-  }
+/* Root node */
+.root-node {
+  display: flex; flex-direction: column; align-items: center; margin-bottom: 0;
+}
+.root-pill {
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 50px; padding: 10px 24px;
+  font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--text2);
+  letter-spacing: 0.05em; max-width: 400px; text-align: center; line-height: 1.5;
+  position: relative; z-index: 2;
+}
 
-  .loader-ring {
-    width: 48px; height: 48px;
-    border: 2px solid var(--border2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
+/* SVG connector layer */
+.connector-svg {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; overflow: visible;
+}
 
-  .loader-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--text3);
-    letter-spacing: 0.1em;
-  }
+/* Order sections */
+.tier-section {
+  margin-bottom: 0;
+}
+.tier-header {
+  display: flex; align-items: center; gap: 10px;
+  max-width: 1100px; margin: 0 auto 1rem; padding: 0 4px;
+}
+.tier-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.tier-label {
+  font-family: 'Geist Mono', monospace; font-size: 10px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+.tier-line { flex: 1; height: 1px; background: var(--border); }
+.tier-count {
+  font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--text3);
+}
 
-  /* ── TREE ── */
-  .order-block { margin-bottom: 2rem; }
+.nodes-row {
+  display: flex; gap: 14px; justify-content: center;
+  flex-wrap: wrap; max-width: 1100px; margin: 0 auto;
+  padding: 0 4px;
+}
 
-  .order-heading {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1rem;
-  }
+/* NODE CARD */
+.node-card {
+  flex: 1; min-width: 220px; max-width: 320px;
+  border-radius: 12px; padding: 1.1rem 1.25rem;
+  border: 1px solid; border-left-width: 3px; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  position: relative; z-index: 2;
+  animation: fadeUp 0.45s ease both;
+}
+.node-card:hover { transform: translateY(-3px); }
+.node-card:hover .expand-hint { opacity: 1; }
 
-  .order-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+.node-card.order-1 { background: var(--c1-bg); border-color: var(--c1-border); }
+.node-card.order-2 { background: var(--c2-bg); border-color: var(--c2-border); }
+.node-card.order-3 { background: var(--c3-bg); border-color: var(--c3-border); }
+.node-card.order-1:hover { box-shadow: 0 8px 32px var(--c1-glow); border-color: rgba(110,231,183,0.4); }
+.node-card.order-2:hover { box-shadow: 0 8px 32px var(--c2-glow); border-color: rgba(147,197,253,0.4); }
+.node-card.order-3:hover { box-shadow: 0 8px 32px var(--c3-glow); border-color: rgba(249,168,212,0.4); }
 
-  .order-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
+.node-sentiment {
+  font-size: 14px; margin-bottom: 8px;
+}
+.node-title {
+  font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 7px;
+}
+.node-card.order-1 .node-title { color: var(--c1); }
+.node-card.order-2 .node-title { color: var(--c2); }
+.node-card.order-3 .node-title { color: var(--c3); }
+.node-desc { font-size: 13px; color: var(--text2); line-height: 1.65; font-weight: 300; }
+.node-parent {
+  margin-top: 10px; font-family: 'Geist Mono', monospace; font-size: 10px;
+  color: var(--text3); letter-spacing: 0.04em;
+  padding-top: 8px; border-top: 1px solid var(--border);
+}
+.expand-hint {
+  margin-top: 10px; font-family: 'Geist Mono', monospace; font-size: 10px;
+  color: var(--text3); opacity: 0; transition: opacity 0.2s;
+  display: flex; align-items: center; gap: 5px;
+}
 
-  .order-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+/* tier spacers (vertical gap between tiers) */
+.tier-spacer { height: 48px; position: relative; }
+.tier-spacer-sm { height: 28px; }
 
-  .nodes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 12px;
-  }
+/* ── ERROR ── */
+#error-box {
+  display: none; background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.2);
+  border-radius: 10px; padding: 1.25rem; font-size: 13px; color: #fca5a5;
+  margin: 2rem auto; max-width: 560px; line-height: 1.6; position: relative; z-index: 1;
+}
 
-  .node-card {
-    border-radius: 10px;
-    padding: 1rem 1.1rem;
-    border: 1px solid;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    position: relative;
-  }
-  .node-card:hover { transform: translateY(-2px); }
+/* ── LEGEND ── */
+.legend {
+  display: flex; gap: 1.75rem; flex-wrap: wrap;
+  max-width: 1100px; margin: 2.5rem auto 0;
+  padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text3); }
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
-  .node-card.order-1 { background: var(--c1-bg); border-color: var(--c1-border); }
-  .node-card.order-2 { background: var(--c2-bg); border-color: var(--c2-border); }
-  .node-card.order-3 { background: var(--c3-bg); border-color: var(--c3-border); }
+/* ── DEEP DIVE PANEL ── */
+#deep-panel {
+  display: none; position: fixed; right: 0; top: 0; bottom: 0;
+  width: min(460px, 100vw); background: var(--surface);
+  border-left: 1px solid var(--border2); padding: 2rem 1.75rem;
+  overflow-y: auto; z-index: 200; animation: slideIn 0.28s ease;
+}
+#panel-backdrop {
+  display: none; position: fixed; inset: 0; z-index: 199;
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(2px);
+}
 
-  .node-icon {
-    font-size: 18px;
-    margin-bottom: 8px;
-  }
+.panel-close {
+  position: absolute; top: 1.1rem; right: 1.1rem;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 7px; color: var(--text2); font-size: 16px;
+  width: 32px; height: 32px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.15s, background 0.15s;
+}
+.panel-close:hover { color: var(--text); background: var(--surface3); }
 
-  .node-title {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.4;
-    margin-bottom: 6px;
-  }
+.panel-order-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Geist Mono', monospace; font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 20px; border: 1px solid; margin-bottom: 1rem;
+}
+.panel-title {
+  font-family: 'Instrument Serif', serif; font-size: 1.5rem;
+  line-height: 1.3; margin-bottom: 1.5rem; padding-right: 2.5rem;
+  font-weight: 400;
+}
+.panel-desc {
+  font-size: 14px; color: var(--text2); line-height: 1.8;
+  font-weight: 300; margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+}
+.panel-analysis-label {
+  font-family: 'Geist Mono', monospace; font-size: 10px;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3);
+  margin-bottom: 1rem;
+}
+.panel-analysis p {
+  font-size: 14px; color: var(--text2); line-height: 1.85;
+  font-weight: 300; margin-bottom: 1.1rem;
+}
+.panel-loading {
+  display: flex; gap: 10px; align-items: center;
+  color: var(--text3); font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+}
+.mini-ring {
+  width: 14px; height: 14px; border: 1.5px solid var(--border2);
+  border-top-color: var(--c2); border-radius: 50%;
+  animation: spin 0.8s linear infinite; flex-shrink: 0;
+}
 
-  .node-card.order-1 .node-title { color: var(--c1); }
-  .node-card.order-2 .node-title { color: var(--c2); }
-  .node-card.order-3 .node-title { color: var(--c3); }
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes slideIn {
+  from { transform: translateX(30px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-6px); opacity: 1; }
+}
 
-  .node-desc {
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.6;
-    font-weight: 300;
-  }
+/* ── SENTIMENT BAR ── */
+.sentiment-bar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  max-width: 1100px; margin: 0 auto 2.5rem;
+  padding: 10px 16px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border2);
+}
+.sent-bar-label {
+  font-family: 'Geist Mono', monospace; font-size: 10px;
+  letter-spacing: 0.1em; color: var(--text3); text-transform: uppercase;
+  margin-right: 4px;
+}
+.sent-bar-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 20px; border: 1px solid;
+  font-family: 'Geist Mono', monospace; font-size: 11px; font-weight: 500;
+}
+.sent-bar-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.sent-bar-divider { width: 1px; height: 16px; background: var(--border2); margin: 0 4px; }
+.sent-bar-verdict {
+  font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--text3);
+  margin-left: auto;
+}
 
-  .node-parent {
-    margin-top: 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text3);
-    letter-spacing: 0.05em;
-  }
-
-  .expand-hint {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text3);
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  /* ── DEEP DIVE PANEL ── */
-  #deep-panel {
-    display: none;
-    position: fixed;
-    right: 0; top: 0; bottom: 0;
-    width: min(440px, 100vw);
-    background: var(--surface);
-    border-left: 1px solid var(--border2);
-    padding: 2rem 1.5rem;
-    overflow-y: auto;
-    z-index: 100;
-    animation: slideIn 0.25s ease;
-  }
-
-  .panel-close {
-    position: absolute;
-    top: 1rem; right: 1rem;
-    background: transparent;
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    color: var(--text2);
-    font-size: 18px;
-    width: 32px; height: 32px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-family: monospace;
-    transition: color 0.15s;
-  }
-  .panel-close:hover { color: var(--text); }
-
-  .panel-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    color: var(--text3);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .panel-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.35rem;
-    line-height: 1.3;
-    margin-bottom: 1.25rem;
-    padding-right: 2rem;
-  }
-
-  .panel-body {
-    font-size: 14px;
-    color: var(--text2);
-    line-height: 1.8;
-    font-weight: 300;
-  }
-
-  .panel-loading {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    color: var(--text3);
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    margin-top: 1rem;
-  }
-
-  .mini-ring {
-    width: 16px; height: 16px;
-    border: 1.5px solid var(--border2);
-    border-top-color: var(--accent2);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    flex-shrink: 0;
-  }
-
-  /* ── ERROR ── */
-  #error-box {
-    display: none;
-    background: rgba(255,80,80,0.08);
-    border: 1px solid rgba(255,80,80,0.25);
-    border-radius: 10px;
-    padding: 1.25rem;
-    font-size: 14px;
-    color: #ff8080;
-    margin: 2rem auto;
-    max-width: 560px;
-  }
-
-  /* ── FOOTER LEGEND ── */
-  .legend {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text3); }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  @keyframes slideIn {
-    from { transform: translateX(40px); opacity: 0; }
-    to   { transform: translateX(0); opacity: 1; }
-  }
-
-  .node-card { animation: fadeUp 0.4s ease both; }
-
-  .provider-box {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    font-size: 13px;
-    color: var(--text2);
-    margin-bottom: 1rem;
-    line-height: 1.6;
-  }
-  .provider-fields { display: flex; flex-direction: column; gap: 8px; }
-  .field-row { display: flex; gap: 8px; }
-  .api-key-input {
-    flex: 1;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    padding: 8px 12px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    outline: none;
-    width: 100%;
-  }
-  .api-key-input:focus { border-color: rgba(200,255,87,0.4); }
-  .api-save-btn {
-    padding: 8px 14px;
-    background: var(--accent);
-    color: #0d0d0d;
-    border: none;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .field-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text3);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 3px;
-  }
-  .status-line { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 4px; }
-  .ollama-hint { font-size: 12px; color: var(--text3); line-height: 1.6; }
-  .ollama-hint code { background: var(--surface2); padding: 1px 6px; border-radius: 4px; font-family: 'DM Mono', monospace; color: var(--text2); }
+/* ── SENTIMENT PILL on node cards ── */
+.sent-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 500;
+  padding: 3px 9px; border-radius: 20px; border: 1px solid;
+  margin-bottom: 9px; letter-spacing: 0.04em;
+}
+.sent-pill-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+@media (max-width: 640px) {
+  .nodes-row { flex-direction: column; align-items: stretch; }
+  .node-card { max-width: 100%; }
+  .map-header { flex-direction: column; }
+  .header-actions { width: 100%; }
+  .ghost-btn { flex: 1; text-align: center; }
+}
 </style>
 </head>
 <body>
 
+<div class="glow-orb orb-1"></div>
+<div class="glow-orb orb-2"></div>
+
 <!-- HERO -->
 <section id="hero">
-  <p class="hero-eyebrow">Second-order thinking</p>
+  <div class="hero-badge">⬡ Second-order thinking</div>
   <h1>What happens <em>after</em><br>what happens?</h1>
-  <p class="hero-sub">Map the ripple effects of any decision — from 1st-order consequences to the ones nobody sees coming.</p>
+  <p class="hero-sub">Map the ripple effects of any decision — from immediate consequences to the systemic shifts nobody sees coming.</p>
 
   <div class="input-wrap">
+    <!-- OLLAMA -->
     <div class="provider-box">
-      <p style="font-size:12px;color:var(--accent);font-family:'DM Mono',monospace;letter-spacing:0.08em;margin-bottom:10px;">🦙 OLLAMA — LOCAL AI</p>
+      <p class="provider-label">🦙 Ollama — Local AI</p>
       <div class="provider-fields">
         <div>
           <p class="field-label">Host</p>
@@ -528,13 +475,14 @@
     </div>
 
     <button class="cta-btn" id="generate-btn" onclick="generate()">Map the consequences →</button>
+    <p class="cmd-hint"><kbd>⌘</kbd> + <kbd>Enter</kbd> to generate</p>
   </div>
 </section>
 
 <!-- LOADING -->
-<div id="loading" style="display:none; flex-direction:column; align-items:center; justify-content:center; padding:5rem 2rem; gap:1.5rem;">
-  <div class="loader-ring"></div>
-  <p class="loader-text" id="loading-text">Thinking through ripple effects…</p>
+<div id="loading">
+  <div class="loader-dots"><span></span><span></span><span></span></div>
+  <p class="loader-label" id="loading-text">Mapping immediate consequences…</p>
 </div>
 
 <!-- ERROR -->
@@ -544,13 +492,21 @@
 <section id="map-section">
   <div class="map-header">
     <div>
-      <p class="decision-label">Decision</p>
+      <p class="decision-meta">Decision under analysis</p>
       <p class="decision-text" id="map-decision"></p>
     </div>
-    <button class="reset-btn" onclick="reset()">← New decision</button>
+    <div class="header-actions">
+      <button class="ghost-btn" onclick="reset()">← New decision</button>
+    </div>
   </div>
 
-  <div id="tree-container"></div>
+  <!-- SENTIMENT SUMMARY BAR -->
+  <div class="sentiment-bar" id="sentiment-bar"></div>
+
+  <div class="tree-wrap" id="tree-wrap">
+    <svg class="connector-svg" id="connector-svg" aria-hidden="true"></svg>
+    <div id="tree-container"></div>
+  </div>
 
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="background:var(--c1)"></div> 1st order — direct, immediate</div>
@@ -559,22 +515,32 @@
   </div>
 </section>
 
+<!-- PANEL BACKDROP -->
+<div id="panel-backdrop" onclick="closePanel()"></div>
+
 <!-- DEEP DIVE PANEL -->
 <div id="deep-panel">
   <button class="panel-close" onclick="closePanel()">✕</button>
-  <p class="panel-eyebrow" id="panel-order"></p>
+  <div class="panel-order-badge" id="panel-badge"></div>
   <p class="panel-title" id="panel-title"></p>
-  <div class="panel-body" id="panel-body"></div>
+  <p class="panel-desc" id="panel-desc"></p>
+  <p class="panel-analysis-label">Deep analysis</p>
+  <div class="panel-analysis" id="panel-analysis"></div>
 </div>
 
 <script>
-const ICONS_1 = ['💼','📉','🔀','⚡','🌊','🔄'];
-const ICONS_2 = ['🔗','🌀','📊','🧩','🎭','💬'];
-const ICONS_3 = ['🌍','🏗️','🔮','♾️','🌱','⚖️'];
-
+// ── State ──
 let currentData = null;
+let currentDecision = '';
+const SENTIMENT = {
+  positive: { label: 'Positive', color: '#4ade80', bg: 'rgba(74,222,128,0.1)',  border: 'rgba(74,222,128,0.4)',  line: 'rgba(74,222,128,0.6)'  },
+  negative: { label: 'Negative', color: '#f87171', bg: 'rgba(248,113,113,0.1)', border: 'rgba(248,113,113,0.4)', line: 'rgba(248,113,113,0.6)' },
+  neutral:  { label: 'Neutral',  color: '#94a3b8', bg: 'rgba(148,163,184,0.08)',border: 'rgba(148,163,184,0.3)', line: 'rgba(148,163,184,0.45)' },
+  mixed:    { label: 'Mixed',    color: '#fbbf24', bg: 'rgba(251,191,36,0.08)', border: 'rgba(251,191,36,0.35)', line: 'rgba(251,191,36,0.5)'  },
+};
+function getSent(s) { return SENTIMENT[s] || SENTIMENT.neutral; }
 
-// ── Ollama test ──
+// ── Ollama ──
 async function checkOllama() {
   const host = document.getElementById('ollama-host').value.trim();
   const status = document.getElementById('ollama-status');
@@ -589,40 +555,24 @@ async function checkOllama() {
   }
 }
 
-// ── AI call via Ollama ──
 async function callAI(prompt) {
   const host = document.getElementById('ollama-host').value.trim() || 'http://localhost:11434';
   const model = document.getElementById('ollama-model').value.trim() || 'llama3.2';
   const res = await fetch(`${host}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model,
-      stream: false,
-      messages: [{ role: 'user', content: prompt }]
-    })
+    body: JSON.stringify({ model, stream: false, messages: [{ role: 'user', content: prompt }] })
   });
   if (!res.ok) throw new Error(`Ollama error ${res.status} — is it running?`);
   const d = await res.json();
   return d.message?.content || '';
 }
 
-function setExample(el) {
-  document.getElementById('decision-input').value = el.textContent;
-}
-
-function showLoading(show) {
-  document.getElementById('loading').style.display = show ? 'flex' : 'none';
-}
-
-function showHero(show) {
-  document.getElementById('hero').style.display = show ? 'flex' : 'none';
-}
-
-function showMap(show) {
-  document.getElementById('map-section').style.display = show ? 'block' : 'none';
-}
-
+// ── Helpers ──
+function setExample(el) { document.getElementById('decision-input').value = el.textContent; }
+function showLoading(show) { document.getElementById('loading').style.display = show ? 'flex' : 'none'; }
+function showHero(show) { document.getElementById('hero').style.display = show ? 'flex' : 'none'; }
+function showMap(show) { document.getElementById('map-section').style.display = show ? 'block' : 'none'; }
 function showError(msg) {
   const el = document.getElementById('error-box');
   el.style.display = msg ? 'block' : 'none';
@@ -630,13 +580,16 @@ function showError(msg) {
 }
 
 function reset() {
-  showMap(false);
-  showHero(true);
-  closePanel();
+  showMap(false); showHero(true); closePanel();
   document.getElementById('decision-input').value = '';
-  currentData = null;
+  document.getElementById('tree-container').innerHTML = '';
+  document.getElementById('connector-svg').innerHTML = '';
+  document.getElementById('sentiment-bar').innerHTML = '';
+  currentData = null; currentDecision = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ── Generate ──
 async function generate() {
   const decision = document.getElementById('decision-input').value.trim();
   if (!decision) return;
@@ -644,18 +597,16 @@ async function generate() {
   showError('');
   showHero(false);
   showLoading(true);
+  document.getElementById('generate-btn').disabled = true;
 
-  const loadingTexts = [
+  const msgs = [
     'Mapping immediate consequences…',
     'Tracing second-order ripples…',
     'Uncovering hidden third-order effects…',
     'Assembling the full picture…'
   ];
-  let li = 0;
-  const lt = setInterval(() => {
-    li = (li + 1) % loadingTexts.length;
-    document.getElementById('loading-text').textContent = loadingTexts[li];
-  }, 2200);
+  let mi = 0, ltEl = document.getElementById('loading-text');
+  const lt = setInterval(() => { mi = (mi + 1) % msgs.length; ltEl.textContent = msgs[mi]; }, 2000);
 
   const prompt = `You are an expert in systems thinking and second-order consequences.
 
@@ -663,147 +614,302 @@ Given this decision/event: "${decision}"
 
 Generate a consequence map with exactly:
 - 3 first-order consequences (direct, immediate effects)
-- 3 second-order consequences (reactions to the first-order effects — what happens next)
+- 3 second-order consequences (reactions to the first-order effects)
 - 3 third-order consequences (systemic, long-term, often unexpected effects)
 
-For each consequence, provide:
-- title: short punchy title (5-8 words)
-- desc: 1-2 sentence explanation (be specific and insightful, not generic)
-- parent: for 2nd order, which 1st order it stems from (use the title). For 3rd order, which 2nd order it stems from. For 1st order, use null.
-- sentiment: "positive", "negative", or "mixed"
+Rules:
+- Each 2nd-order consequence must stem from ONE of the 1st-order ones
+- Each 3rd-order consequence must stem from ONE of the 2nd-order ones
+- Distribute parents: ideally each 1st-order node has at least one 2nd-order child
+- title: 5–8 words, specific and punchy
+- desc: 1–2 sentences, specific and insightful — avoid generic corporate-speak
+- parent: exact title of parent node (null for 1st order)
+- sentiment: "positive", "negative", or "neutral" (use neutral for truly ambiguous effects)
 
-Respond ONLY with a valid JSON object. No explanation, no markdown, no code fences, no text before or after. Start your response with { and end with }.
+Respond ONLY with valid JSON, no markdown, no code fences. Start with { end with }.
 {
   "order1": [
-    {"title": "...", "desc": "...", "parent": null, "sentiment": "..."},
+    {"title": "...", "desc": "...", "parent": null, "sentiment": "positive|negative|neutral"},
     {"title": "...", "desc": "...", "parent": null, "sentiment": "..."},
     {"title": "...", "desc": "...", "parent": null, "sentiment": "..."}
   ],
   "order2": [
-    {"title": "...", "desc": "...", "parent": "title of order1 consequence", "sentiment": "..."},
-    {"title": "...", "desc": "...", "parent": "title of order1 consequence", "sentiment": "..."},
-    {"title": "...", "desc": "...", "parent": "title of order1 consequence", "sentiment": "..."}
+    {"title": "...", "desc": "...", "parent": "<exact order1 title>", "sentiment": "..."},
+    {"title": "...", "desc": "...", "parent": "<exact order1 title>", "sentiment": "..."},
+    {"title": "...", "desc": "...", "parent": "<exact order1 title>", "sentiment": "..."}
   ],
   "order3": [
-    {"title": "...", "desc": "...", "parent": "title of order2 consequence", "sentiment": "..."},
-    {"title": "...", "desc": "...", "parent": "title of order2 consequence", "sentiment": "..."},
-    {"title": "...", "desc": "...", "parent": "title of order2 consequence", "sentiment": "..."}
+    {"title": "...", "desc": "...", "parent": "<exact order2 title>", "sentiment": "..."},
+    {"title": "...", "desc": "...", "parent": "<exact order2 title>", "sentiment": "..."},
+    {"title": "...", "desc": "...", "parent": "<exact order2 title>", "sentiment": "..."}
   ]
 }`;
 
   try {
     const raw = await callAI(prompt);
     clearInterval(lt);
-    // extract the first { ... } block robustly
     const match = raw.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('Model did not return valid JSON. Try again.');
+    if (!match) throw new Error('Model did not return valid JSON. Please try again.');
     currentData = JSON.parse(match[0]);
+    currentDecision = decision;
     showLoading(false);
     renderMap(decision, currentData);
-  } catch (e) {
+  } catch(e) {
     clearInterval(lt);
     showLoading(false);
     showHero(true);
-    showError('Error: ' + (e.message || 'Something went wrong. Check your settings and try again.'));
+    showError('Error: ' + (e.message || 'Something went wrong. Check your API key and try again.'));
+  } finally {
+    document.getElementById('generate-btn').disabled = false;
   }
 }
 
+// ── Render Map ──
 function renderMap(decision, data) {
   document.getElementById('map-decision').textContent = decision;
-
   const container = document.getElementById('tree-container');
   container.innerHTML = '';
+  document.getElementById('connector-svg').innerHTML = '';
 
-  const orders = [
-    { key: 'order1', label: '1st order — direct effects', color: 'var(--c1)', cls: 'order-1', icons: ICONS_1 },
-    { key: 'order2', label: '2nd order — reactions to reactions', color: 'var(--c2)', cls: 'order-2', icons: ICONS_2 },
-    { key: 'order3', label: '3rd order — systemic & long-term', color: 'var(--c3)', cls: 'order-3', icons: ICONS_3 },
+  const tiers = [
+    { key: 'order1', label: '1st order — direct effects',         color: 'var(--c1)', cls: 'order-1' },
+    { key: 'order2', label: '2nd order — reactions to reactions', color: 'var(--c2)', cls: 'order-2' },
+    { key: 'order3', label: '3rd order — systemic & long-term',   color: 'var(--c3)', cls: 'order-3' },
   ];
 
-  orders.forEach(({ key, label, color, cls, icons }, oi) => {
-    const block = document.createElement('div');
-    block.className = 'order-block';
+  // Root node
+  const rootWrap = document.createElement('div');
+  rootWrap.className = 'root-node';
+  const rootPill = document.createElement('div');
+  rootPill.className = 'root-pill';
+  rootPill.id = 'root-pill';
+  rootPill.textContent = decision.length > 60 ? decision.slice(0, 60) + '…' : decision;
+  rootWrap.appendChild(rootPill);
+  container.appendChild(rootWrap);
 
-    const heading = document.createElement('div');
-    heading.className = 'order-heading';
-    heading.innerHTML = `
-      <div class="order-dot" style="background:${color}"></div>
-      <span class="order-title" style="color:${color}">${label}</span>
-      <div class="order-line"></div>`;
-    block.appendChild(heading);
+  // Spacer
+  const spacer0 = document.createElement('div');
+  spacer0.className = 'tier-spacer';
+  container.appendChild(spacer0);
 
-    const grid = document.createElement('div');
-    grid.className = 'nodes-grid';
+  // Node element registry: title → DOM element
+  const nodeEls = {};
+
+  tiers.forEach(({ key, label, color, cls }, ti) => {
+    const section = document.createElement('div');
+    section.className = 'tier-section';
+
+    const hdr = document.createElement('div');
+    hdr.className = 'tier-header';
+    hdr.innerHTML = `<div class="tier-dot" style="background:${color}"></div>
+      <span class="tier-label" style="color:${color}">${label}</span>
+      <div class="tier-line"></div>
+      <span class="tier-count" style="color:${color}">${(data[key]||[]).length} nodes</span>`;
+    section.appendChild(hdr);
+
+    const row = document.createElement('div');
+    row.className = 'nodes-row';
+    row.id = `tier-row-${ti}`;
 
     (data[key] || []).forEach((node, i) => {
       const card = document.createElement('div');
       card.className = `node-card ${cls}`;
-      card.style.animationDelay = `${oi * 0.15 + i * 0.07}s`;
+      card.id = `node-${key}-${i}`;
+      card.style.animationDelay = `${ti * 0.12 + i * 0.07}s`;
 
-      const icon = icons[i % icons.length];
-      const parentHtml = node.parent ? `<p class="node-parent">↳ from: ${node.parent}</p>` : '';
+      const s = getSent(node.sentiment);
+      // Background from tier, left border from sentiment
+      const tierBg = { 'order-1': 'var(--c1-bg)', 'order-2': 'var(--c2-bg)', 'order-3': 'var(--c3-bg)' }[cls];
+      const tierBorder = { 'order-1': 'var(--c1-border)', 'order-2': 'var(--c2-border)', 'order-3': 'var(--c3-border)' }[cls];
+      card.style.background = tierBg;
+      card.style.borderColor = tierBorder;
+      card.style.borderLeftColor = s.color;
+
+      const parentHtml = node.parent
+        ? `<p class="node-parent">↳ ${node.parent}</p>`
+        : '';
 
       card.innerHTML = `
-        <div class="node-icon">${icon}</div>
+        <div class="sent-pill" style="color:${s.color};border-color:${s.border};background:${s.bg}">
+          <span class="sent-pill-dot" style="background:${s.color}"></span>${s.label}
+        </div>
         <p class="node-title">${node.title}</p>
         <p class="node-desc">${node.desc}</p>
         ${parentHtml}
-        <p class="expand-hint">⊕ click to explore deeper</p>`;
+        <p class="expand-hint">⊕ deep analysis</p>`;
 
       card.addEventListener('click', () => openPanel(node, cls, color));
-      grid.appendChild(card);
+      row.appendChild(card);
+      nodeEls[node.title] = { el: card, sentiment: node.sentiment };
     });
 
-    block.appendChild(grid);
-    container.appendChild(block);
+    section.appendChild(row);
+    container.appendChild(section);
+
+    if (ti < tiers.length - 1) {
+      const sp = document.createElement('div');
+      sp.className = 'tier-spacer';
+      container.appendChild(sp);
+    }
   });
 
   showMap(true);
+  renderSentimentBar(data);
+  // Draw connectors after layout
+  requestAnimationFrame(() => requestAnimationFrame(() => drawConnectors(data, nodeEls)));
 }
 
+// ── Sentiment Summary Bar ──
+function renderSentimentBar(data) {
+  const all = [...(data.order1||[]), ...(data.order2||[]), ...(data.order3||[])];
+  const counts = { positive: 0, negative: 0, neutral: 0, mixed: 0 };
+  all.forEach(n => { const k = n.sentiment || 'neutral'; counts[k] = (counts[k]||0) + 1; });
+
+  const total = all.length;
+  const pos = counts.positive || 0;
+  const neg = counts.negative || 0;
+  const neu = (counts.neutral || 0) + (counts.mixed || 0);
+
+  let verdict = '';
+  if (neg > pos + neu) verdict = 'Overall: net negative';
+  else if (pos > neg + neu) verdict = 'Overall: net positive';
+  else if (neg > pos) verdict = 'Overall: leans negative';
+  else if (pos > neg) verdict = 'Overall: leans positive';
+  else verdict = 'Overall: balanced';
+
+  const bar = document.getElementById('sentiment-bar');
+  bar.innerHTML = `
+    <span class="sent-bar-label">Consequences</span>
+    ${pos ? `<div class="sent-bar-pill" style="color:${SENTIMENT.positive.color};border-color:${SENTIMENT.positive.border};background:${SENTIMENT.positive.bg}"><span class="sent-bar-dot" style="background:${SENTIMENT.positive.color}"></span>${pos} Positive</div>` : ''}
+    ${neg ? `<div class="sent-bar-pill" style="color:${SENTIMENT.negative.color};border-color:${SENTIMENT.negative.border};background:${SENTIMENT.negative.bg}"><span class="sent-bar-dot" style="background:${SENTIMENT.negative.color}"></span>${neg} Negative</div>` : ''}
+    ${neu ? `<div class="sent-bar-pill" style="color:${SENTIMENT.neutral.color};border-color:${SENTIMENT.neutral.border};background:${SENTIMENT.neutral.bg}"><span class="sent-bar-dot" style="background:${SENTIMENT.neutral.color}"></span>${neu} Neutral</div>` : ''}
+    <span class="sent-bar-divider"></span>
+    <span class="sent-bar-verdict">${verdict} across ${total} consequences</span>`;
+}
+
+// ── Draw SVG connectors ──
+function drawConnectors(data, nodeEls) {
+  const svg = document.getElementById('connector-svg');
+  const wrap = document.getElementById('tree-wrap');
+  const wRect = wrap.getBoundingClientRect();
+  const rootEl = document.getElementById('root-pill');
+
+  function midBottom(el) {
+    const r = el.getBoundingClientRect();
+    return { x: r.left - wRect.left + r.width / 2, y: r.top - wRect.top + r.height };
+  }
+  function midTop(el) {
+    const r = el.getBoundingClientRect();
+    return { x: r.left - wRect.left + r.width / 2, y: r.top - wRect.top };
+  }
+
+  function bezier(from, to, strokeColor, dash = '3 5') {
+    const cy1 = from.y + (to.y - from.y) * 0.45;
+    const cy2 = from.y + (to.y - from.y) * 0.55;
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', `M${from.x},${from.y} C${from.x},${cy1} ${to.x},${cy2} ${to.x},${to.y}`);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', strokeColor);
+    path.setAttribute('stroke-width', '1.5');
+    path.setAttribute('stroke-dasharray', dash);
+    path.setAttribute('opacity', '0.7');
+    svg.appendChild(path);
+  }
+
+  // root → order1: grey neutral lines
+  const rootBottom = midBottom(rootEl);
+  (data.order1 || []).forEach((node) => {
+    const entry = nodeEls[node.title];
+    if (!entry) return;
+    const lineColor = getSent(node.sentiment).line;
+    bezier(rootBottom, midTop(entry.el), lineColor);
+  });
+
+  // order1 → order2: colored by child sentiment
+  (data.order2 || []).forEach((node) => {
+    const parentEntry = nodeEls[node.parent];
+    const childEntry = nodeEls[node.title];
+    if (!parentEntry || !childEntry) return;
+    bezier(midBottom(parentEntry.el), midTop(childEntry.el), getSent(node.sentiment).line);
+  });
+
+  // order2 → order3: colored by child sentiment
+  (data.order3 || []).forEach((node) => {
+    const parentEntry = nodeEls[node.parent];
+    const childEntry = nodeEls[node.title];
+    if (!parentEntry || !childEntry) return;
+    bezier(midBottom(parentEntry.el), midTop(childEntry.el), getSent(node.sentiment).line);
+  });
+}
+
+// ── Panel ──
 function openPanel(node, cls, color) {
   const panel = document.getElementById('deep-panel');
-  document.getElementById('panel-order').textContent = cls.replace('-', ' order consequences');
-  document.getElementById('panel-title').textContent = node.title;
-  document.getElementById('panel-body').innerHTML = `
-    <p style="margin-bottom:1rem">${node.desc}</p>
-    <div class="panel-loading"><div class="mini-ring"></div><span>Diving deeper…</span></div>`;
-  panel.style.display = 'block';
+  const backdrop = document.getElementById('panel-backdrop');
 
-  deepDive(node, color);
+  // Badge
+  const badge = document.getElementById('panel-badge');
+  const orderNames = { 'order-1': '1st order', 'order-2': '2nd order', 'order-3': '3rd order' };
+  badge.textContent = orderNames[cls] || cls;
+  badge.style.color = color;
+  badge.style.borderColor = color.replace('var(--c', 'var(--c').replace(')', '-border)');
+  badge.style.background = color.replace('var(--c', 'var(--c').replace(')', '-bg)');
+
+  document.getElementById('panel-title').textContent = node.title;
+  document.getElementById('panel-desc').textContent = node.desc;
+
+  // Sentiment pill in panel
+  const s = getSent(node.sentiment);
+  const existingPill = panel.querySelector('.panel-sent-pill');
+  if (existingPill) existingPill.remove();
+  const pill = document.createElement('div');
+  pill.className = 'panel-sent-pill sent-pill';
+  pill.style.cssText = `color:${s.color};border-color:${s.border};background:${s.bg};margin-bottom:1rem;`;
+  pill.innerHTML = `<span class="sent-pill-dot" style="background:${s.color}"></span>${s.label} consequence`;
+  document.getElementById('panel-title').after(pill);
+  document.getElementById('panel-analysis').innerHTML = '<div class="panel-loading"><div class="mini-ring"></div><span>Generating deep analysis…</span></div>';
+
+  panel.style.display = 'block';
+  backdrop.style.display = 'block';
+
+  deepDive(node);
 }
 
-async function deepDive(node, color) {
-  const prompt = `For this consequence: "${node.title}" — ${node.desc}
+async function deepDive(node) {
+  const prompt = `For this consequence: "${node.title}"
 
-Write a 3-paragraph deep analysis (200 words total):
-1. Why this consequence is often underestimated
-2. Who is most affected and how
-3. What could amplify or dampen this effect
+Context: ${node.desc}
 
-Be specific, insightful, and avoid generic statements. Plain text only, no bullet points or headers.`;
+Write a focused 3-paragraph deep analysis (about 180 words total):
+1. Why this consequence is systematically underestimated or misunderstood
+2. Who bears the most impact — and how their behavior shifts in response  
+3. What conditions would amplify or dampen this effect over time
+
+Be specific and concrete. Avoid generic business-speak. Plain paragraphs only.`;
 
   try {
     const text = await callAI(prompt);
-    const paras = text.trim().split('\n\n').filter(Boolean);
-    document.getElementById('panel-body').innerHTML = `
-      <p style="margin-bottom:1rem;font-size:14px;color:var(--text2);font-weight:300">${node.desc}</p>
-      <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:1rem;">
-        ${paras.map(p => `<p style="margin-bottom:1rem;font-size:14px;line-height:1.8;color:var(--text2);font-weight:300">${p}</p>`).join('')}
-      </div>`;
+    const paras = text.trim().split(/\n\n+/).filter(p => p.trim());
+    document.getElementById('panel-analysis').innerHTML =
+      paras.map(p => `<p>${p.trim()}</p>`).join('');
   } catch(e) {
-    document.getElementById('panel-body').innerHTML += `<p style="color:var(--text3);font-size:12px;margin-top:1rem">Could not load deep analysis: ${e.message}</p>`;
+    document.getElementById('panel-analysis').innerHTML =
+      `<p style="color:var(--text3)">Could not load analysis: ${e.message}</p>`;
   }
 }
 
 function closePanel() {
   document.getElementById('deep-panel').style.display = 'none';
+  document.getElementById('panel-backdrop').style.display = 'none';
 }
 
+// ── Keyboard shortcuts ──
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closePanel();
-  if (e.key === 'Enter' && e.metaKey) generate();
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) generate();
 });
+
+// ── Init ──
 </script>
 </body>
 </html>
