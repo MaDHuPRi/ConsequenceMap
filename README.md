@@ -16,6 +16,11 @@ You type a decision or event — *"I quit my job to freelance"*, *"My city bans 
 
 Each node is labeled **Positive**, **Negative**, or **Neutral**, with color-coded bezier lines tracing every pathway from root to outcome. Click any node for a deep-dive analysis.
 
+---
+
+## Screenshot
+
+> _Add a screenshot here — `![Consequence Map screenshot](screenshot.png)`_
 
 ---
 
@@ -26,7 +31,6 @@ Each node is labeled **Positive**, **Negative**, or **Neutral**, with color-code
 | Frontend | Vanilla HTML + CSS + JS — no framework, no build step |
 | AI | [Ollama](https://ollama.com) running locally |
 | Fonts | Instrument Serif, Geist, Geist Mono (Google Fonts) |
-| Hosting | Vercel (free tier) |
 
 Zero backend. Zero database. Zero ongoing cost.
 
@@ -50,26 +54,9 @@ Any instruction-following model works — `mistral`, `gemma2`, `phi3`, `qwen2.5`
 
 ---
 
-## Deploy in 3 minutes
+## Run it
 
-### Option A — Vercel CLI
-
-```bash
-npm i -g vercel
-vercel
-```
-
-Done. You'll get a live URL like `consequence-map.vercel.app`.
-
-### Option B — Vercel Dashboard (no terminal)
-
-1. Go to [vercel.com](https://vercel.com) → **New Project**
-2. Drag and drop this folder
-3. Click **Deploy**
-
-### Option C — Run locally (no deploy needed)
-
-Just open `index.html` directly in your browser. Since AI calls go to `localhost:11434`, no server is needed.
+Just open `index.html` directly in your browser. Since AI calls go to `localhost:11434`, no server or deploy needed.
 
 ---
 
@@ -132,7 +119,6 @@ Just open `index.html` directly in your browser. Since AI calls go to `localhost
 ```
 consequence-map/
 ├── index.html      # Everything — HTML, CSS, JS in one file
-├── vercel.json     # Vercel rewrite rule (SPA fallback)
 └── README.md
 ```
 
