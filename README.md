@@ -16,11 +16,6 @@ You type a decision or event — *"I quit my job to freelance"*, *"My city bans 
 
 Each node is labeled **Positive**, **Negative**, or **Neutral**, with color-coded bezier lines tracing every pathway from root to outcome. Click any node for a deep-dive analysis.
 
----
-
-## Screenshot
-
-> _Add a screenshot here — `![Consequence Map screenshot](screenshot.png)`_
 
 ---
 
